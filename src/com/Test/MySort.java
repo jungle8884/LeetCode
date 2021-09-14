@@ -1,8 +1,6 @@
 package com.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class MySort {
@@ -13,7 +11,7 @@ public class MySort {
                 .replace('[', ' ')
                 .replace(']', ' ')
                 .trim().split(",")).mapToInt((s)->{return Integer.valueOf(s);}).toArray();
-        quickSort(nums);
+        heapSort(nums);
         // 输出: [1,2,3,5]
         Arrays.stream(nums).forEach(System.out::print);
     }
@@ -64,15 +62,43 @@ public class MySort {
 
     // 2 堆排序
     public static void heapSort(int[] arr) {
-        // 构建初始大顶堆
-        buildMaxHeap(arr);
-        for (int i = arr.length - 1; i > 0; i--) {
-            // 将最大值交换到数组最后
+//        // 构建初始大顶堆
+//        buildMaxHeap(arr);
+//        for (int i = arr.length - 1; i > 0; i--) {
+//            // 将最大值交换到数组最后: 最后的数组就是 由小到大的 数组了! 即 正序
+//            swap(arr, 0, i);
+//            // 调整剩余数组，使其满足大顶堆
+//            maxHeapify(arr, 0, i);
+//        }
+
+        // 构建初始小顶堆 : 逆序
+        buildMinHeap(arr);
+        for (int i = arr.length-1; i > 0; i--) {
             swap(arr, 0, i);
-            // 调整剩余数组，使其满足大顶堆
-            maxHeapify(arr, 0, i);
+            minHeapify(arr, 0, i);
         }
     }
+
+    // 构建初始小顶堆
+    private static void buildMinHeap(int[] arr) {
+        // 最后一个非叶结点的计算公式: i = arr.length/2-1 (索引, 从0开始编号)
+        for (int i = arr.length/2-1; i >= 0; i--) {
+            minHeapify(arr, i, arr.length);
+        }
+    }
+    // 调整小顶堆
+    private static void minHeapify(int[] arr, int i, int heapSize) {
+        int l = 2*i + 1;
+        int r = l + 1;
+        int minimum = i;
+        if (l < heapSize && arr[l] < arr[minimum]) minimum = l;
+        if (r < heapSize && arr[r] < arr[minimum]) minimum = r;
+        if (minimum != i) {
+            swap(arr, i, minimum);
+            minHeapify(arr, minimum, heapSize);
+        }
+    }
+
     // 构建初始大顶堆
     private static void buildMaxHeap(int[] arr) {
         // 从最后一个非叶子结点开始调整大顶堆，最后一个非叶子结点的下标就是 arr.length / 2 - 1`

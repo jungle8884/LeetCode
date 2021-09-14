@@ -1,6 +1,7 @@
 package com.Test;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class sortedSquares_977 {
@@ -12,9 +13,6 @@ public class sortedSquares_977 {
         int[] nums = Arrays.stream(line.substring(1, size-1)
                 .split(","))
                 .mapToInt((s)->{return Integer.valueOf(s);}).toArray();
-//        for (int i = 0; i < nums.length; i++) {
-//            System.out.println(nums[i]);
-//        }
         int[] res = sortedSquares(nums);
         System.out.println(Arrays.toString(res));
     }
@@ -43,6 +41,7 @@ public class sortedSquares_977 {
         int right = nums.length-1;
         int k = nums.length-1;
         int[] res = new int[nums.length];
+
         while (k < res.length && left <= right) {
             int tmpLeft = nums[left]* nums[left];
             int tmpRight = nums[right] * nums[right];
